@@ -1,0 +1,5 @@
+org.springframework.context.ApplicationContextInitializer=\
+  com.zznode.dhmp.boot.context.ProvinceComponentContextInitializer,\
+  com.zznode.dhmp.boot.core.DhmpApplicationContextInitializer
+
+

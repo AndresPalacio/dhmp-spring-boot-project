@@ -67,18 +67,32 @@
         <dependency>
             <groupId>com.zznode.dhmp</groupId>
             <artifactId>dhmp-data-commons</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${dhmp.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.zznode.dhmp</groupId>
             <artifactId>dhmp-lov</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${dhmp.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.zznode.dhmp</groupId>
             <artifactId>dhmp-lov-support</artifactId>
+            <version>${dhmp.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>10.1.13</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zznode.dhmp.security</groupId>
+            <artifactId>dhmp-security-oauth2-resource-server</artifactId>
             <version>1.0-SNAPSHOT</version>
             <optional>true</optional>
         </dependency>

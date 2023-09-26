@@ -40,16 +40,22 @@ public class DefaultInternalTokenManager implements InternalTokenManager {
 
     @Override
     public boolean validate(String token) {
-        String decryptToken = AesUtil.decryptData(token);
+        String decryptToken;
+        try {
+            decryptToken = AesUtil.decryptData(token);
+        } catch (Exception e) {
+            logger.error("error occurred while decrypting token: [{}].", token, e);
+            return false;
+        }
         String[] split = decryptToken.split(TOKEN_SPLITTER);
         if (split.length != TOKEN_PART) {
-            logger.error("Invalid token.");
+            logger.error("Invalid token: [{}].", token);
             return false;
         }
         String tokenValue = split[0];
         if (!Objects.equals(tokenValue, properties.getInternalToken())) {
             // 此处可能出现 在发起远程调用请求之后配置中心修改了token配置，导致获取到的token校验失败, 概率较低, 不想解决
-            logger.error("token value is error.");
+            logger.error("token value [{}] is error.", tokenValue);
             return false;
         }
         long expireTime;

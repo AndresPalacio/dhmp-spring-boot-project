@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
     <properties>
         <dhmp-component.version>1.0-SNAPSHOT</dhmp-component.version>
+        <dhmp-security.version>1.0-SNAPSHOT</dhmp-security.version>
         <dhmp-spring-boot.version>1.0-SNAPSHOT</dhmp-spring-boot.version>
     </properties>
     <dependencyManagement>
@@ -17,18 +18,10 @@
 
             <dependency>
                 <groupId>com.zznode.dhmp</groupId>
-                <artifactId>dhmp-core</artifactId>
-                <version>${dhmp-component.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.zznode.dhmp</groupId>
-                <artifactId>dhmp-beans</artifactId>
-                <version>${dhmp-component.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.zznode.dhmp</groupId>
-                <artifactId>dhmp-web</artifactId>
-                <version>${dhmp-component.version}</version>
+                <artifactId>dhmp-component-bom</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <scope>import</scope>
+                <type>pom</type>
             </dependency>
 
             <dependency>

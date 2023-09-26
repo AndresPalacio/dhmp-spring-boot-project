@@ -11,5 +11,7 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.zznode.dhmp.boot.autoconfigure.mybatis.plus.DhmpMybatisPlusAutoConfiguration\
   com.zznode.dhmp.boot.autoconfigure.export.DhmpExportAutoConfiguration\
   com.zznode.dhmp.boot.autoconfigure.lov.LovAutoConfiguration\
-  com.zznode.dhmp.boot.autoconfigure.cache.DhmpCacheAutoConfiguration
+  com.zznode.dhmp.boot.autoconfigure.cache.DhmpCacheAutoConfiguration\
+  com.zznode.dhmp.boot.autoconfigure.security.oauth2.resource.DhmpResourceServerAutoConfiguration
+
 

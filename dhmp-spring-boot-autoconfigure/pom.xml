@@ -83,6 +83,12 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>com.zznode.dhmp</groupId>
+            <artifactId>dhmp-file</artifactId>
+            <version>${dhmp.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
             <version>10.1.13</version>

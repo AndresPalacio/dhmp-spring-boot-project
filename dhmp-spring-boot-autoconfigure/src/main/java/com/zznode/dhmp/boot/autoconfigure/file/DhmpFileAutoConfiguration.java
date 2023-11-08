@@ -29,16 +29,16 @@ public class DhmpFileAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(name = "dhmp.file.remote-enabled", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(name = "dhmp.file.manage.remote", havingValue = "true", matchIfMissing = true)
     FileInfoManager fileInfoManager(RestTemplate restTemplate) {
-        return new RemoteFileInfoManager(restTemplate, properties.getFileServiceUrl());
+        return new RemoteFileInfoManager(restTemplate, properties.getManage().getFileServiceUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
     FileClient fileClient(FileInfoManager fileInfoService) {
         return FileClient.builder()
-                .basePath(this.properties.getBasePath())
+                .basePath(this.properties.getClient().getBasePath())
                 .fileInfoManager(fileInfoService)
                 .build();
     }

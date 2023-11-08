@@ -1,5 +1,6 @@
-package com.zznode.dhmp.boot.autoconfigure.data.page;
+package com.zznode.dhmp.boot.autoconfigure.data.web;
 
+import com.zznode.dhmp.boot.autoconfigure.file.CustomRestTemplateCustomizer;
 import com.zznode.dhmp.data.page.parser.DefaultOrderByParser;
 import com.zznode.dhmp.data.page.parser.OrderByParser;
 import com.zznode.dhmp.data.page.web.DhmpPageableHandlerMethodArgumentResolver;
@@ -22,12 +23,12 @@ import org.springframework.data.web.config.SpringDataWebConfiguration;
  * @date create in 2023/7/3 15:20
  */
 @Configuration
-public class DhmpPageConfiguration extends SpringDataWebConfiguration {
+public class DhmpDataWebConfiguration extends SpringDataWebConfiguration {
 
     private final Lazy<SortHandlerMethodArgumentResolver> sortResolver;
 
-    public DhmpPageConfiguration(ApplicationContext context,
-                                 @Qualifier("mvcConversionService") ObjectFactory<ConversionService> conversionService) {
+    public DhmpDataWebConfiguration(ApplicationContext context,
+                                    @Qualifier("mvcConversionService") ObjectFactory<ConversionService> conversionService) {
         super(context, conversionService);
         this.sortResolver = Lazy
                 .of(() -> context.getBean("sortResolver", SortHandlerMethodArgumentResolver.class));
@@ -48,4 +49,8 @@ public class DhmpPageConfiguration extends SpringDataWebConfiguration {
         return pageableResolver;
     }
 
+    @Bean
+    CustomRestTemplateCustomizer customRestTemplateCustomizer() {
+        return new CustomRestTemplateCustomizer();
+    }
 }

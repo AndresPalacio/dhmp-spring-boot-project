@@ -5,7 +5,7 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.zznode.dhmp.boot.autoconfigure.context.DhmpProvinceCustomizerAutoConfiguration\
   com.zznode.dhmp.boot.autoconfigure.web.DhmpWebAutoConfiguration\
   com.zznode.dhmp.boot.autoconfigure.web.internal.DhmpInternalRequestAutoConfiguration\
-  com.zznode.dhmp.boot.autoconfigure.data.page.DhmpPageAutoConfiguration\
+  com.zznode.dhmp.boot.autoconfigure.data.web.DhmpDataAutoConfiguration\
   com.zznode.dhmp.boot.autoconfigure.data.exception.DhmpExceptionAutoConfiguration\
   com.zznode.dhmp.boot.autoconfigure.jdbc.datasource.DynamicDataSourceAutoConfiguration\
   com.zznode.dhmp.boot.autoconfigure.mybatis.plus.DhmpMybatisPlusAutoConfiguration\

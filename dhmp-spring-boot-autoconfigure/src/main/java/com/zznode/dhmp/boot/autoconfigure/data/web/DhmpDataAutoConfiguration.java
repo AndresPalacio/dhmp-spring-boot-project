@@ -1,4 +1,4 @@
-package com.zznode.dhmp.boot.autoconfigure.data.page;
+package com.zznode.dhmp.boot.autoconfigure.data.web;
 
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -23,13 +23,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @AutoConfiguration
 @AutoConfigureBefore(SpringDataWebAutoConfiguration.class)
 @ConditionalOnClass({WebMvcConfigurer.class, com.zznode.dhmp.data.page.domain.PageRequest.class})
-@Import({DhmpPageConfiguration.class})
+@Import({DhmpDataWebConfiguration.class})
 @EnableConfigurationProperties(SpringDataWebProperties.class)
-public class DhmpPageAutoConfiguration {
+public class DhmpDataAutoConfiguration {
 
     private final SpringDataWebProperties properties;
 
-    public DhmpPageAutoConfiguration(SpringDataWebProperties properties) {
+    public DhmpDataAutoConfiguration(SpringDataWebProperties properties) {
         this.properties = properties;
     }
 

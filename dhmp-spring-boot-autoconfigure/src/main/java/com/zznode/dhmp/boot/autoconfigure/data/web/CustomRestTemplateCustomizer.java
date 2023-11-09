@@ -1,4 +1,4 @@
-package com.zznode.dhmp.boot.autoconfigure.file;
+package com.zznode.dhmp.boot.autoconfigure.data.web;
 
 import com.zznode.dhmp.data.web.RestResponseErrorHandler;
 import org.springframework.boot.web.client.RestTemplateCustomizer;

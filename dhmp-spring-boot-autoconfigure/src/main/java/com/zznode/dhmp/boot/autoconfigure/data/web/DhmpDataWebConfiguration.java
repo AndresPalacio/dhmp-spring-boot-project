@@ -1,6 +1,5 @@
 package com.zznode.dhmp.boot.autoconfigure.data.web;
 
-import com.zznode.dhmp.boot.autoconfigure.file.CustomRestTemplateCustomizer;
 import com.zznode.dhmp.data.page.parser.DefaultOrderByParser;
 import com.zznode.dhmp.data.page.parser.OrderByParser;
 import com.zznode.dhmp.data.page.web.DhmpPageableHandlerMethodArgumentResolver;

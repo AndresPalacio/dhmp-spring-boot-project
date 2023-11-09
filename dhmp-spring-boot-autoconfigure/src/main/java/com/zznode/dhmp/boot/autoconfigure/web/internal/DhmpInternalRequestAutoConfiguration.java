@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfigu
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,7 +22,8 @@ import org.springframework.web.client.RestTemplate;
  */
 @AutoConfiguration(before = {RestTemplateAutoConfiguration.class})
 @EnableConfigurationProperties(DhmpWebInternalProperties.class)
-@ConditionalOnClass({RestTemplate.class, InternalTokenManager.class})
+@ConditionalOnClass({InternalTokenManager.class})
+@Import({RestTemplateInternalRequestConfiguration.class, WebClientInternalRequestConfiguration.class})
 public class DhmpInternalRequestAutoConfiguration {
 
     @Bean
@@ -36,16 +38,5 @@ public class DhmpInternalRequestAutoConfiguration {
         return new RequestHeaderCopier();
     }
 
-    @Bean
-    public InternalRequestRestTemplateCustomizer internalRequestRestTemplateCustomizer(RequestHeaderCopier requestHeaderCopier,
-                                                                                       InternalTokenManager internalTokenManager) {
-        return new InternalRequestRestTemplateCustomizer(requestHeaderCopier, internalTokenManager);
-    }
 
-    @Bean
-    @Lazy
-    @ConditionalOnMissingBean
-    public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
-        return restTemplateBuilder.build();
-    }
 }

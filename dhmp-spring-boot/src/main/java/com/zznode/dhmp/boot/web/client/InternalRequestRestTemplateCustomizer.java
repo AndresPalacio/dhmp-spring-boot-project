@@ -14,18 +14,16 @@ import org.springframework.http.client.ClientHttpRequest;
  * @date create in 2023/8/24
  */
 public class InternalRequestRestTemplateCustomizer implements RestTemplateRequestCustomizer<ClientHttpRequest> {
-    private final RequestHeaderCopier requestHeaderCopier;
     private final InternalTokenManager internalTokenManager;
 
-    public InternalRequestRestTemplateCustomizer(RequestHeaderCopier requestHeaderCopier, InternalTokenManager internalTokenManager) {
-        this.requestHeaderCopier = requestHeaderCopier;
+    public InternalRequestRestTemplateCustomizer(InternalTokenManager internalTokenManager) {
         this.internalTokenManager = internalTokenManager;
     }
 
     @Override
     public void customize(ClientHttpRequest request) {
         HttpHeaders httpHeaders = request.getHeaders();
-        requestHeaderCopier.copyHeaders(httpHeaders::set);
+        RequestHeaderCopier.copyHeaders(httpHeaders::set);
         httpHeaders.add(InternalRequestHeaders.INTERNAL_TOKEN, internalTokenManager.generateToken());
     }
 }

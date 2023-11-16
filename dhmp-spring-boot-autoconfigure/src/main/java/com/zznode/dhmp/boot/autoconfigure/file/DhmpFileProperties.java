@@ -3,74 +3,33 @@ package com.zznode.dhmp.boot.autoconfigure.file;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * 描述
+ * 文件配置属性
  *
  * @author 王俊
  */
 @ConfigurationProperties("dhmp.file")
 public class DhmpFileProperties {
 
-    private Client client;
-    private Manage manage;
+    private Server server;
 
-    public Client getClient() {
-        return client;
+    public Server getServer() {
+        return server;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setServer(Server server) {
+        this.server = server;
     }
 
-    public Manage getManage() {
-        return manage;
-    }
+    public static class Server {
+        private String uri;
 
-    public void setManage(Manage manage) {
-        this.manage = manage;
-    }
-
-    public static class Client {
-
-        private Boolean remote;
-
-        private String basePath;
-
-        public Boolean getRemote() {
-            return remote;
+        public String getUri() {
+            return uri;
         }
 
-        public void setRemote(Boolean remote) {
-            this.remote = remote;
-        }
-
-        public String getBasePath() {
-            return basePath;
-        }
-
-        public void setBasePath(String basePath) {
-            this.basePath = basePath;
+        public void setUri(String uri) {
+            this.uri = uri;
         }
     }
 
-    public static class Manage {
-
-        private Boolean remote;
-        private String fileServiceUrl;
-
-        public Boolean getRemote() {
-            return remote;
-        }
-
-        public void setRemote(Boolean remote) {
-            this.remote = remote;
-        }
-
-        public String getFileServiceUrl() {
-            return fileServiceUrl;
-        }
-
-        public void setFileServiceUrl(String fileServiceUrl) {
-            this.fileServiceUrl = fileServiceUrl;
-        }
-    }
 }

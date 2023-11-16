@@ -13,6 +13,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
@@ -60,6 +61,8 @@ public class DhmpResourceServerConfiguration {
                         }
                     })
                     .cors(Customizer.withDefaults())
+                    // 资源服务器不需要csrf
+                    .csrf(AbstractHttpConfigurer::disable)
                     .exceptionHandling(exceptions -> {
                         // 错误返回403
                     })

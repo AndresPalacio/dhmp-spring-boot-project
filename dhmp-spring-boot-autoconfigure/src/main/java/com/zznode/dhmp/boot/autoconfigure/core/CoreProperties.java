@@ -16,7 +16,7 @@ public class CoreProperties {
     /**
      * 配置文件目录，请以路径分隔符结尾
      * <p>eg: "classpath:/"
-     * <p>eg: "/usr/local/data/config/"
+     * <p>eg: "file:/usr/local/data/config/"
      */
     private String configLocation = "classpath:/";
 

@@ -4,15 +4,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.zznode.dhmp.boot</groupId>
+    <parent>
+        <groupId>com.zznode.dhmp.boot</groupId>
+        <artifactId>dhmp-spring-boot-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
     <artifactId>dhmp-spring-boot</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <spring-boot.version>3.1.4</spring-boot.version>
-        <dhmp.version>1.0-SNAPSHOT</dhmp.version>
     </properties>
 
     <dependencies>
@@ -20,44 +22,37 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot</artifactId>
-            <version>${spring-boot.version}</version>
         </dependency>
         <dependency>
             <groupId>com.zznode.dhmp</groupId>
             <artifactId>dhmp-core</artifactId>
-            <version>${dhmp.version}</version>
         </dependency>
         <dependency>
             <groupId>com.zznode.dhmp</groupId>
             <artifactId>dhmp-context</artifactId>
-            <version>${dhmp.version}</version>
         </dependency>
 
 <!--       排除依赖 -->
         <dependency>
             <groupId>com.zznode.dhmp</groupId>
             <artifactId>dhmp-web</artifactId>
-            <version>${dhmp.version}</version>
             <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webflux</artifactId>
-            <version>6.0.12</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.zznode.dhmp</groupId>
             <artifactId>dhmp-jdbc</artifactId>
-            <version>${dhmp.version}</version>
             <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>5.0.1</version>
             <optional>true</optional>
         </dependency>
     </dependencies>

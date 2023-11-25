@@ -4,28 +4,30 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.zznode.dhmp.boot</groupId>
+    <parent>
+        <groupId>com.zznode.dhmp.boot</groupId>
+        <artifactId>dhmp-spring-boot-starter-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
     <artifactId>dhmp-spring-boot-starter</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <properties>
-        <spring-boot.version>3.1.4</spring-boot.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-            <version>${spring-boot.version}</version>
         </dependency>
         <dependency>
             <groupId>com.zznode.dhmp.boot</groupId>
             <artifactId>dhmp-spring-boot</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>com.zznode.dhmp.boot</groupId>
             <artifactId>dhmp-spring-boot-autoconfigure</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${version}</version>
         </dependency>
     </dependencies>
 </project>

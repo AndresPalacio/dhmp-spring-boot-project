@@ -19,7 +19,14 @@
             <dependency>
                 <groupId>com.zznode.dhmp</groupId>
                 <artifactId>dhmp-component-bom</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${dhmp-component.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>com.zznode.dhmp.security</groupId>
+                <artifactId>dhmp-security-bom</artifactId>
+                <version>${dhmp-security.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>

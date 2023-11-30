@@ -21,8 +21,14 @@
             <version>${version}</version>
         </dependency>
         <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>com.zznode.dhmp</groupId>
             <artifactId>dhmp-jdbc</artifactId>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

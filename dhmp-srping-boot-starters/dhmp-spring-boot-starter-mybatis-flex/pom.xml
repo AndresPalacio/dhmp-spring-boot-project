@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -9,30 +9,28 @@
         <artifactId>dhmp-spring-boot-starter-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>dhmp-spring-boot-starter-mybatis-plus</artifactId>
+    <artifactId>dhmp-spring-boot-starter-mybatis-flex</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <properties>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>com.zznode.dhmp.boot</groupId>
             <artifactId>dhmp-spring-boot-starter</artifactId>
-            <version>${version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.zznode.dhmp.boot</groupId>
             <artifactId>dhmp-spring-boot-starter-jdbc</artifactId>
-            <version>${version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis-plus.version}</version>
+            <groupId>com.mybatis-flex</groupId>
+            <artifactId>mybatis-flex-spring-boot-starter</artifactId>
+            <version>${mybatis-flex.version}</version>
         </dependency>
         <dependency>
             <groupId>com.zznode.dhmp</groupId>
-            <artifactId>dhmp-mybatis-plus</artifactId>
+            <artifactId>dhmp-mybatis-flex</artifactId>
         </dependency>
     </dependencies>
 

@@ -63,6 +63,11 @@
             </dependency>
             <dependency>
                 <groupId>com.zznode.dhmp.boot</groupId>
+                <artifactId>dhmp-spring-boot-starter-mybatis-flex</artifactId>
+                <version>${dhmp-spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.zznode.dhmp.boot</groupId>
                 <artifactId>dhmp-spring-boot-starter-data-commons</artifactId>
                 <version>${dhmp-spring-boot.version}</version>
             </dependency>

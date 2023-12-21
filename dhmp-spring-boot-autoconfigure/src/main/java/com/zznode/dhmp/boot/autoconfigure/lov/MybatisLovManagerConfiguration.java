@@ -1,5 +1,6 @@
 package com.zznode.dhmp.boot.autoconfigure.lov;
 
+import com.zznode.dhmp.boot.autoconfigure.mybatis.flex.DhmpMybatisFlexAutoConfiguration;
 import com.zznode.dhmp.boot.autoconfigure.mybatis.plus.DhmpMybatisPlusAutoConfiguration;
 import com.zznode.dhmp.lov.LovManager;
 import com.zznode.dhmp.lov.support.manager.MybatisLovManager;
@@ -18,7 +19,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnClass({SqlSessionFactory.class, MybatisLovManager.class})
-@AutoConfigureAfter(DhmpMybatisPlusAutoConfiguration.class)
+@AutoConfigureAfter({DhmpMybatisPlusAutoConfiguration.class, DhmpMybatisFlexAutoConfiguration.class})
 public class MybatisLovManagerConfiguration {
 
     @Bean

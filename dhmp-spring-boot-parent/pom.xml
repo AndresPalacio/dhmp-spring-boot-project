@@ -15,7 +15,8 @@
         <dhmp-component.version>1.0-SNAPSHOT</dhmp-component.version>
         <dhmp-security.version>1.0-SNAPSHOT</dhmp-security.version>
         <mybatis-plus.version>3.5.4.1</mybatis-plus.version>
-        <pagehelper-starter.version>1.4.7</pagehelper-starter.version>
+        <mybatis-flex.version>1.7.5</mybatis-flex.version>
+        <pagehelper-starter.version>2.1.0</pagehelper-starter.version>
     </properties>
 
     <dependencyManagement>

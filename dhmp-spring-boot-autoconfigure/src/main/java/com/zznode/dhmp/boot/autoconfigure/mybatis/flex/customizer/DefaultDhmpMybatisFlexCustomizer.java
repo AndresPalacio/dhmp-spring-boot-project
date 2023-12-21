@@ -3,11 +3,13 @@ package com.zznode.dhmp.boot.autoconfigure.mybatis.flex.customizer;
 import com.mybatisflex.core.FlexGlobalConfig;
 import com.zznode.dhmp.mybatis.flex.config.customizer.DhmpMybatisFlexCustomizer;
 import com.zznode.dhmp.mybatis.flex.domain.BaseModel;
+import com.zznode.dhmp.mybatis.flex.listener.insert.InsertAuditListener;
 import com.zznode.dhmp.mybatis.flex.listener.set.DelegatingSetListener;
+import com.zznode.dhmp.mybatis.flex.listener.update.UpdateAuditListener;
 import org.springframework.core.Ordered;
 
 /**
- * 描述
+ * 默认配置
  *
  * @author 王俊
  */
@@ -27,6 +29,8 @@ public class DefaultDhmpMybatisFlexCustomizer implements DhmpMybatisFlexCustomiz
     @Override
     public void customize(FlexGlobalConfig globalConfig) {
         globalConfig.registerSetListener(setListener, BaseModel.class);
+        globalConfig.registerInsertListener(new InsertAuditListener(), BaseModel.class);
+        globalConfig.registerUpdateListener(new UpdateAuditListener(), BaseModel.class);
     }
 
     @Override

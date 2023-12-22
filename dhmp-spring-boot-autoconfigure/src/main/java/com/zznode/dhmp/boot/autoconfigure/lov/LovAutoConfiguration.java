@@ -4,10 +4,10 @@ import com.zznode.dhmp.lov.LovCache;
 import com.zznode.dhmp.lov.LovManager;
 import com.zznode.dhmp.lov.client.DefaultLovClient;
 import com.zznode.dhmp.lov.client.LovClient;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -24,17 +24,12 @@ import org.springframework.context.annotation.Import;
 public class LovAutoConfiguration {
 
     @Bean
-    public LovClient lovClient(LovCache lovCache,
+    public LovClient lovClient(ObjectProvider<LovCache> lovCache,
                                LovManager lovManager) {
         DefaultLovClient lovClient = new DefaultLovClient();
-        lovClient.setLovCache(lovCache);
+        lovCache.ifAvailable(lovClient::setLovCache);
         lovClient.setLovManager(lovManager);
         return lovClient;
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public LovCache lovCache(CacheManager cacheManager) {
-        return new LovCache(cacheManager);
-    }
 }

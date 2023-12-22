@@ -24,5 +24,10 @@
             <groupId>com.zznode.dhmp</groupId>
             <artifactId>dhmp-data-commons</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-autoconfigure</artifactId>
+            <version>${pagehelper-starter.version}</version>
+        </dependency>
     </dependencies>
 </project>

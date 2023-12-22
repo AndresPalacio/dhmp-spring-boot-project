@@ -6,6 +6,7 @@ import com.github.pagehelper.autoconfigure.PageHelperProperties;
 import com.github.pagehelper.autoconfigure.PageHelperStandardProperties;
 import com.zznode.dhmp.boot.autoconfigure.mybatis.flex.DhmpMybatisFlexAutoConfiguration;
 import com.zznode.dhmp.boot.autoconfigure.mybatis.plus.DhmpMybatisPlusAutoConfiguration;
+import com.zznode.dhmp.data.page.PagePostInterceptor;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -45,9 +46,14 @@ public class PageHelperAutoConfiguration implements InitializingBean {
     public void afterPropertiesSet() throws Exception {
         PageInterceptor interceptor = new PageInterceptor();
         interceptor.setProperties(this.properties);
+        PagePostInterceptor pagePostInterceptor = new PagePostInterceptor();
         for (SqlSessionFactory sqlSessionFactory : sqlSessionFactoryList) {
             org.apache.ibatis.session.Configuration configuration = sqlSessionFactory.getConfiguration();
-            if (!containsInterceptor(configuration, interceptor)) {
+            // 再前面的拦截器会后执行。
+            if (notContainsInterceptor(configuration, pagePostInterceptor)) {
+                configuration.addInterceptor(pagePostInterceptor);
+            }
+            if (notContainsInterceptor(configuration, interceptor)) {
                 configuration.addInterceptor(interceptor);
             }
         }
@@ -56,12 +62,12 @@ public class PageHelperAutoConfiguration implements InitializingBean {
     /**
      * 是否已经存在相同拦截器
      */
-    private boolean containsInterceptor(org.apache.ibatis.session.Configuration configuration, Interceptor interceptor) {
+    private boolean notContainsInterceptor(org.apache.ibatis.session.Configuration configuration, Interceptor interceptor) {
         try {
             // getInterceptors since 3.2.2
-            return configuration.getInterceptors().stream().anyMatch(config -> interceptor.getClass().isAssignableFrom(config.getClass()));
+            return configuration.getInterceptors().stream().noneMatch(config -> interceptor.getClass().isAssignableFrom(config.getClass()));
         } catch (Exception e) {
-            return false;
+            return true;
         }
     }
 

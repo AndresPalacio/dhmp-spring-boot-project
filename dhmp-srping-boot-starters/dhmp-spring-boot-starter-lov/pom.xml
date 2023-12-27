@@ -24,10 +24,6 @@
             <groupId>com.zznode.dhmp</groupId>
             <artifactId>dhmp-lov</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.zznode.dhmp</groupId>
-            <artifactId>dhmp-lov-support</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

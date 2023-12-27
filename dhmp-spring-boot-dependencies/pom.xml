@@ -81,6 +81,11 @@
                 <artifactId>dhmp-spring-boot-starter-lov</artifactId>
                 <version>${dhmp-spring-boot.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.zznode.dhmp.boot</groupId>
+                <artifactId>dhmp-spring-boot-starter-file</artifactId>
+                <version>${dhmp-spring-boot.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

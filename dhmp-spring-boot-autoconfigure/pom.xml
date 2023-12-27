@@ -92,11 +92,6 @@
         </dependency>
         <dependency>
             <groupId>com.zznode.dhmp</groupId>
-            <artifactId>dhmp-lov-support</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.zznode.dhmp</groupId>
             <artifactId>dhmp-file</artifactId>
             <optional>true</optional>
         </dependency>
@@ -110,7 +105,6 @@
         <dependency>
             <groupId>com.zznode.dhmp.security</groupId>
             <artifactId>dhmp-security-oauth2-resource-server</artifactId>
-            <version>1.0-SNAPSHOT</version>
             <optional>true</optional>
         </dependency>
 
@@ -131,12 +125,4 @@
             <optional>true</optional>
         </dependency>
     </dependencies>
-<!--    <build>-->
-<!--        <extensions>-->
-<!--            <extension>-->
-<!--                <groupId>org.springframework</groupId>-->
-<!--                <artifactId>spring-webmvc</artifactId>-->
-<!--            </extension>-->
-<!--        </extensions>-->
-<!--    </build>-->
 </project>

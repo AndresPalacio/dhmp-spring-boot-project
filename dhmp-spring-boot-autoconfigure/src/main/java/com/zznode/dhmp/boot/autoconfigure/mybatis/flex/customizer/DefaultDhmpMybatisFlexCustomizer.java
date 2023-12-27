@@ -1,6 +1,7 @@
 package com.zznode.dhmp.boot.autoconfigure.mybatis.flex.customizer;
 
 import com.mybatisflex.core.FlexGlobalConfig;
+import com.mybatisflex.core.activerecord.Model;
 import com.zznode.dhmp.mybatis.flex.config.customizer.DhmpMybatisFlexCustomizer;
 import com.zznode.dhmp.mybatis.flex.domain.BaseModel;
 import com.zznode.dhmp.mybatis.flex.listener.insert.InsertAuditListener;
@@ -28,7 +29,8 @@ public class DefaultDhmpMybatisFlexCustomizer implements DhmpMybatisFlexCustomiz
      */
     @Override
     public void customize(FlexGlobalConfig globalConfig) {
-        globalConfig.registerSetListener(setListener, BaseModel.class);
+        // 修改将setListener注册到Model上,因为大多数场景的实体类都没必要继承BaseModel
+        globalConfig.registerSetListener(setListener, Model.class);
         globalConfig.registerInsertListener(new InsertAuditListener(), BaseModel.class);
         globalConfig.registerUpdateListener(new UpdateAuditListener(), BaseModel.class);
     }

@@ -4,6 +4,7 @@ import com.zznode.dhmp.web.client.InternalTokenManager;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.web.client.RestClientAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -16,10 +17,14 @@ import org.springframework.context.annotation.Import;
  * @author 王俊
  * @date create in 2023/8/25
  */
-@AutoConfiguration(before = {RestTemplateAutoConfiguration.class, WebClientAutoConfiguration.class})
+@AutoConfiguration(before = {RestTemplateAutoConfiguration.class, WebClientAutoConfiguration.class, RestClientAutoConfiguration.class})
 @EnableConfigurationProperties(DhmpWebInternalProperties.class)
 @ConditionalOnClass({InternalTokenManager.class})
-@Import({RestTemplateInternalRequestConfiguration.class, WebClientInternalRequestConfiguration.class})
+@Import({
+        RestTemplateInternalRequestConfiguration.class,
+        WebClientInternalRequestConfiguration.class,
+        RestClientInternalRequestConfiguration.class
+})
 public class DhmpInternalRequestAutoConfiguration {
 
     @Bean

@@ -4,6 +4,7 @@ import com.zznode.dhmp.core.constant.InternalRequestHeaders;
 import com.zznode.dhmp.web.client.InternalTokenManager;
 import com.zznode.dhmp.web.client.RequestHeaderCopier;
 import org.springframework.boot.web.client.RestClientCustomizer;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestClient;
 
 /**
@@ -22,9 +23,21 @@ public class InternalRequestRestClientCustomizer implements RestClientCustomizer
     @Override
     public void customize(RestClient.Builder restClientBuilder) {
 
-        restClientBuilder.defaultRequest(requestHeadersSpec -> requestHeadersSpec.headers(httpHeaders -> {
-            RequestHeaderCopier.copyHeaders(httpHeaders::set);
-            httpHeaders.add(InternalRequestHeaders.INTERNAL_TOKEN, internalTokenManager.generateToken());
-        }));
+        restClientBuilder
+                .requestInitializer(request -> {
+                    HttpHeaders httpHeaders = request.getHeaders();
+                    RequestHeaderCopier.copyHeaders(httpHeaders::set);
+                    httpHeaders.add(InternalRequestHeaders.INTERNAL_TOKEN, internalTokenManager.generateToken());
+                });
+//                此配置的header无法实时生成最新的token, 服务端获取到的token是过期的
+//                .defaultHeaders(httpHeaders -> {
+//                    RequestHeaderCopier.copyHeaders(httpHeaders::set);
+//                    httpHeaders.add(InternalRequestHeaders.INTERNAL_TOKEN, internalTokenManager.generateToken());
+//                })
+//                TMD RestClient有毒,此配置无用
+//                .defaultRequest(requestHeadersSpec -> requestHeadersSpec.headers(httpHeaders -> {
+//                    RequestHeaderCopier.copyHeaders(httpHeaders::set);
+//                    httpHeaders.add(InternalRequestHeaders.INTERNAL_TOKEN, internalTokenManager.generateToken());
+//                }));
     }
 }

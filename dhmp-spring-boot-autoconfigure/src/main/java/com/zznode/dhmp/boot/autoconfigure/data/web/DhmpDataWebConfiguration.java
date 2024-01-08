@@ -49,7 +49,7 @@ public class DhmpDataWebConfiguration extends SpringDataWebConfiguration {
     }
 
     @Bean
-    CustomRestTemplateCustomizer customRestTemplateCustomizer() {
-        return new CustomRestTemplateCustomizer();
+    ExceptionRestCustomizer customRestTemplateCustomizer() {
+        return new ExceptionRestCustomizer();
     }
 }

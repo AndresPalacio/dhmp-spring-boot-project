@@ -11,16 +11,13 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.PropertySource;
 
 import javax.sql.DataSource;
 
 /**
  * 动态数据源自动配置类
- * <p>注意，数据库相关配置，建议配置在名为{application-datasource.properties}的文件中，
- * 否则请配置在主配置文件
+ * <p>注意，数据库相关配置，建议配置在名为application-datasource.properties的文件中
  *
- * <p>PropertySource注解引入数据源相关配置
  *
  * @author 王俊
  * @date create in 2023/5/24 18:03
@@ -33,7 +30,6 @@ import javax.sql.DataSource;
         DynamicDataSourceConfiguration.Druid.class,
         DynamicDataSourceConfiguration.Dbcp2.class
 })
-@PropertySource("${dhmp.core.config-location}application-datasource.properties")
 public class DynamicDataSourceAutoConfiguration {
 
 

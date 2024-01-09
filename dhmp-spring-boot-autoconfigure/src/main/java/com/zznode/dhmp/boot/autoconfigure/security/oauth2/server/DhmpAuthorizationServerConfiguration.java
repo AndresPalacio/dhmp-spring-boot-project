@@ -1,40 +1,28 @@
 package com.zznode.dhmp.boot.autoconfigure.security.oauth2.server;
 
+import com.zznode.dhmp.security.oauth2.server.authorization.DhmpOAuth2AuthorizationServerConfiguration;
 import com.zznode.dhmp.security.oauth2.server.authorization.DhmpOAuth2AuthorizationServerProperties;
 import com.zznode.dhmp.security.oauth2.server.authorization.configurer.DhmpFormLoginConfigurer;
 import com.zznode.dhmp.security.oauth2.server.authorization.filter.ClearResourceFilter;
 import com.zznode.dhmp.security.oauth2.server.authorization.handler.AccountAuthenticationFailureHandler;
 import com.zznode.dhmp.security.oauth2.server.authorization.handler.UserClearLogoutHandler;
-import com.zznode.dhmp.security.oauth2.server.authorization.smt.authentication.ThirdAuthenticator;
-import com.zznode.dhmp.security.oauth2.server.authorization.smt.configures.FromThirdLoginConfigurer;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
-import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
-import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
-
-import java.util.Set;
-
-import static org.springframework.security.config.Customizer.withDefaults;
 
 /**
  * 授权服务器过滤器配置
@@ -46,20 +34,11 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class DhmpAuthorizationServerConfiguration {
 
-    private static final String[] PERMIT_PATHS = new String[]{"/error", "/login/**", "/webjars/**",
-            "/css/**", "/js/**", "/img/**", "/favicon.ico"};
-
     private final DhmpOAuth2AuthorizationServerProperties properties;
 
 
     public DhmpAuthorizationServerConfiguration(DhmpOAuth2AuthorizationServerProperties properties) {
         this.properties = properties;
-    }
-
-    private static RequestMatcher createRequestMatcher() {
-        MediaTypeRequestMatcher requestMatcher = new MediaTypeRequestMatcher(MediaType.TEXT_HTML);
-        requestMatcher.setIgnoredMediaTypes(Set.of(MediaType.ALL));
-        return requestMatcher;
     }
 
     /**
@@ -68,27 +47,13 @@ public class DhmpAuthorizationServerConfiguration {
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
-                                                               ObjectProvider<Customizer<FromThirdLoginConfigurer<HttpSecurity>>> fromThirdLoginConfigurerCustomizerObjectProvider) throws Exception {
+                                                               ObjectProvider<Customizer<HeadersConfigurer<HttpSecurity>>> headersConfigurerCustomizerObjectProvider) throws Exception {
 
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-        http.getConfigurer(OAuth2AuthorizationServerConfigurer.class).oidc(withDefaults());
-        http.oauth2ResourceServer((resourceServer) -> resourceServer.jwt(withDefaults()));
-        http.exceptionHandling((exceptions) -> exceptions.defaultAuthenticationEntryPointFor(
-                new LoginUrlAuthenticationEntryPoint("/login"), createRequestMatcher()));
-
-        // 第三方嵌入静默登录、4A票据登录
-        Customizer<FromThirdLoginConfigurer<HttpSecurity>> fromThirdLoginConfigurerCustomizer = fromThirdLoginConfigurerCustomizerObjectProvider.getIfAvailable();
-        if (fromThirdLoginConfigurerCustomizer != null) {
-            http.with(new FromThirdLoginConfigurer<>(), fromThirdLoginConfigurerCustomizer);
-        }
+        DhmpOAuth2AuthorizationServerConfiguration.applyDefaultOauth2Security(http);
+        // 自定义响应头
+        http.headers(headersConfigurerCustomizerObjectProvider.getIfAvailable(Customizer::withDefaults));
         return http.build();
-    }
-
-    @Bean
-    @ConditionalOnBean(ThirdAuthenticator.class)
-    @ConditionalOnMissingBean
-    Customizer<FromThirdLoginConfigurer<HttpSecurity>> fromThirdLoginConfigurerCustomizer() {
-        return withDefaults();
     }
 
     /**
@@ -98,29 +63,28 @@ public class DhmpAuthorizationServerConfiguration {
     @Order(SecurityProperties.BASIC_AUTH_ORDER)
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http,
                                                    ObjectProvider<AccountAuthenticationFailureHandler> accountAuthenticationFailureHandler,
-                                                   UserClearLogoutHandler userClearLogoutHandler) throws Exception {
+                                                   UserClearLogoutHandler userClearLogoutHandler,
+                                                   ObjectProvider<Customizer<HeadersConfigurer<HttpSecurity>>> headersConfigurerCustomizerObjectProvider) throws Exception {
 
-        http.authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(PERMIT_PATHS).permitAll()
-                        .anyRequest().authenticated()
-                )
-                .cors(withDefaults())
-                .formLogin(AbstractHttpConfigurer::disable)
-                .logout(logout -> logout
-                        .addLogoutHandler(userClearLogoutHandler)
-                        .permitAll()
-                );
+        DhmpOAuth2AuthorizationServerConfiguration.applyDefaultSecurityLogin(http);
 
-        http.with(new DhmpFormLoginConfigurer<>(), dhmpFormLoginConfigurer -> {
-            dhmpFormLoginConfigurer.loginPage("/login")
-                    .passwordParameter(properties.getPasswordParameter())
-                    .usernameParameter(properties.getUsernameParameter())
-                    .passwordEncrypt(properties.getPasswordEncrypt())
-                    .usernameEncrypt(properties.getUsernameEncrypt())
-                    .defaultSuccessUrl(properties.getDefaultRedirectUrl())
-                    .permitAll();
-            accountAuthenticationFailureHandler.ifAvailable(dhmpFormLoginConfigurer::failureHandler);
-        });
+        http.logout(logout -> logout
+                .addLogoutHandler(userClearLogoutHandler)
+                .permitAll()
+        );
+        //noinspection unchecked
+        DhmpFormLoginConfigurer<HttpSecurity> dhmpFormLoginConfigurer = http.getConfigurer(DhmpFormLoginConfigurer.class);
+        dhmpFormLoginConfigurer.loginPage("/login")
+                .passwordParameter(properties.getPasswordParameter())
+                .usernameParameter(properties.getUsernameParameter())
+                .passwordEncrypt(properties.getPasswordEncrypt())
+                .usernameEncrypt(properties.getUsernameEncrypt())
+                .defaultSuccessUrl(properties.getDefaultRedirectUrl())
+                .permitAll();
+        accountAuthenticationFailureHandler.ifAvailable(dhmpFormLoginConfigurer::failureHandler);
+
+        // 自定义响应头，比如允许嵌入等
+        http.headers(headersConfigurerCustomizerObjectProvider.getIfAvailable(Customizer::withDefaults));
 
         return http.build();
     }

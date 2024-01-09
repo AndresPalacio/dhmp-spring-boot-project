@@ -15,3 +15,4 @@ com.zznode.dhmp.boot.autoconfigure.file.DhmpFileAutoConfiguration
 com.zznode.dhmp.boot.autoconfigure.schedule.ScheduleAutoConfiguration
 com.zznode.dhmp.boot.autoconfigure.cache.DhmpCacheAutoConfiguration
 com.zznode.dhmp.boot.autoconfigure.security.oauth2.resource.DhmpResourceServerAutoConfiguration
+com.zznode.dhmp.boot.autoconfigure.security.oauth2.server.DhmpAuthorizationServerAutoConfiguration

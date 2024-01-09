@@ -91,6 +91,16 @@
                 <artifactId>dhmp-spring-boot-starter-schedule</artifactId>
                 <version>${dhmp-spring-boot.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.zznode.dhmp.boot</groupId>
+                <artifactId>dhmp-spring-boot-starter-oauth2-authorization-server</artifactId>
+                <version>${dhmp-spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.zznode.dhmp.boot</groupId>
+                <artifactId>dhmp-spring-boot-starter-oauth2-resource-server</artifactId>
+                <version>${dhmp-spring-boot.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

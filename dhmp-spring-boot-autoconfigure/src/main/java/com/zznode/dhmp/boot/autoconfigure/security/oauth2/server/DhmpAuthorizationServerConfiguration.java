@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,6 +24,11 @@ import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
+
+import java.util.Set;
 
 /**
  * 授权服务器过滤器配置
@@ -41,6 +47,12 @@ public class DhmpAuthorizationServerConfiguration {
         this.properties = properties;
     }
 
+    private static RequestMatcher createRequestMatcher() {
+        MediaTypeRequestMatcher requestMatcher = new MediaTypeRequestMatcher(MediaType.TEXT_HTML);
+        requestMatcher.setIgnoredMediaTypes(Set.of(MediaType.ALL));
+        return requestMatcher;
+    }
+
     /**
      * oauth2授权配置
      */
@@ -51,6 +63,8 @@ public class DhmpAuthorizationServerConfiguration {
 
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         DhmpOAuth2AuthorizationServerConfiguration.applyDefaultOauth2Security(http);
+        http.exceptionHandling((exceptions) -> exceptions.defaultAuthenticationEntryPointFor(
+                new LoginUrlAuthenticationEntryPoint(properties.getLoginUrl()), createRequestMatcher()));
         // 自定义响应头
         http.headers(headersConfigurerCustomizerObjectProvider.getIfAvailable(Customizer::withDefaults));
         return http.build();
@@ -74,7 +88,7 @@ public class DhmpAuthorizationServerConfiguration {
         );
         //noinspection unchecked
         DhmpFormLoginConfigurer<HttpSecurity> dhmpFormLoginConfigurer = http.getConfigurer(DhmpFormLoginConfigurer.class);
-        dhmpFormLoginConfigurer.loginPage("/login")
+        dhmpFormLoginConfigurer.loginPage(properties.getLoginUrl())
                 .passwordParameter(properties.getPasswordParameter())
                 .usernameParameter(properties.getUsernameParameter())
                 .passwordEncrypt(properties.getPasswordEncrypt())

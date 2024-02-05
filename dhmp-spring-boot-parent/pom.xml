@@ -10,12 +10,12 @@
 
     <packaging>pom</packaging>
     <properties>
-        <spring-framework.version>6.1.2</spring-framework.version>
-        <spring-boot.version>3.2.1</spring-boot.version>
+        <spring-framework.version>6.1.3</spring-framework.version>
+        <spring-boot.version>3.2.2</spring-boot.version>
         <dhmp-component.version>1.0-SNAPSHOT</dhmp-component.version>
         <dhmp-security.version>1.0-SNAPSHOT</dhmp-security.version>
         <mybatis-plus.version>3.5.4.1</mybatis-plus.version>
-        <mybatis-flex.version>1.7.5</mybatis-flex.version>
+        <mybatis-flex.version>1.7.9</mybatis-flex.version>
         <pagehelper-starter.version>2.1.0</pagehelper-starter.version>
     </properties>
 

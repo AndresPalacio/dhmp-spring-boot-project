@@ -6,7 +6,6 @@ import com.zznode.dhmp.jdbc.datasource.DataSourceProvider;
 import com.zznode.dhmp.jdbc.datasource.DataSourceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.util.Assert;
 
 import javax.sql.DataSource;
@@ -51,45 +50,31 @@ public abstract class AbstractDataSourceProvider<D extends DataSource> implement
     @Override
     public DataSource getMasterDataSource() {
         Object dataSource = dataSources.get(DataSourceType.MASTER);
-        if(dataSource == null){
-           return init();
+        if (dataSource == null) {
+            init();
+            dataSource = dataSources.get(DataSourceType.MASTER);
+            if (dataSource == null) {
+                throw new IllegalStateException("a master dataSource cannot be null! please check your configuration");
+            }
         }
         return (DataSource) dataSource;
     }
 
     /**
      * 初始化多数据源
-     *
-     * @return 主数据源
      */
-    public D init() {
-
-        D masterDataSource = properties.createMasterDataSource(getType());
-        Assert.notNull(masterDataSource, "a master dataSource cannot be null! please check your configuration");
-        dataSources.put(DataSourceType.MASTER, this.wrapDataSource(masterDataSource));
-        PropertyMapper mapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
-
-        mapper.from(properties.createHguSparkDataSource(getType()))
-                .as(this::wrapDataSource)
-                .to((ds) -> dataSources.put(DataSourceType.HGU_SPARK, ds));
-
-        mapper.from(properties.createStbSparkDataSource(getType()))
-                .as(this::wrapDataSource)
-                .to((ds) -> dataSources.put(DataSourceType.STB_SPARK, ds));
-
-        mapper.from(properties.createHbaseDataSource(getType()))
-                .as(this::wrapDataSource)
-                .to((ds) -> dataSources.put(DataSourceType.HBASE, ds));
-
-        mapper.from(properties.createClickhouseDataSource(getType()))
-                .as(this::wrapDataSource)
-                .to((ds) -> dataSources.put(DataSourceType.CLICKHOUSE, ds));
-
-        return masterDataSource;
+    public void init() {
+        properties.getDefinition()
+                .forEach((key, value) -> {
+                    D dataSource = properties.buildDataSource(getType(), key, value);
+                    if (dataSource != null) {
+                        dataSources.put(key, wrapDataSource(dataSource));
+                    }
+                });
     }
 
     /**
-     * 添加数据源类型(可能某个省份会同时使用mysql和oracle数据库)
+     * 添加数据源类型(可能某个程序会同时使用mysql和oracle数据库)
      *
      * @param dataSourceName 数据源类型名称，不能与{@link DataSourceType}中重复。
      * @param dataSource     数据源，数据源类型必须和{@link DynamicDataSourceProperties#getType()}一致

@@ -2,6 +2,7 @@ package com.zznode.dhmp.boot.autoconfigure.jdbc.datasource;
 
 import com.zaxxer.hikari.HikariDataSource;
 import com.zznode.dhmp.boot.jdbc.datasource.DataSourceAware;
+import com.zznode.dhmp.jdbc.datasource.DataSourceType;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -10,6 +11,8 @@ import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
 import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 数据源配置项
@@ -23,15 +26,20 @@ public class DynamicDataSourceProperties implements BeanClassLoaderAware, Initia
 
     private ClassLoader classLoader;
 
+    /**
+     * 数据源定义, 请至少定义一个主数据源MASTER
+     *
+     * @see DataSourceType
+     */
+    Map<String, DataSourceDefinition> definition = new HashMap<>();
+    /**
+     * 数据源类型，同spring.datasource.type
+     */
     private Class<? extends DataSource> type = HikariDataSource.class;
-
+    /**
+     * 是否启用密码加密
+     */
     private Boolean enablePasswordEncrypt = false;
-
-    private Master master = new Master();
-    private HguSpark hguSpark = new HguSpark();
-    private StbSpark stbSpark = new StbSpark();
-    private Hbase hbase = new Hbase();
-    private Clickhouse clickhouse = new Clickhouse();
 
     public Class<? extends DataSource> getType() {
         return this.type;
@@ -49,44 +57,8 @@ public class DynamicDataSourceProperties implements BeanClassLoaderAware, Initia
         this.enablePasswordEncrypt = enablePasswordEncrypt;
     }
 
-    public Master getMaster() {
-        return master;
-    }
-
-    public void setMaster(Master master) {
-        this.master = master;
-    }
-
-    public HguSpark getHguSpark() {
-        return hguSpark;
-    }
-
-    public void setHguSpark(HguSpark hguSpark) {
-        this.hguSpark = hguSpark;
-    }
-
-    public StbSpark getStbSpark() {
-        return stbSpark;
-    }
-
-    public void setStbSpark(StbSpark stbSpark) {
-        this.stbSpark = stbSpark;
-    }
-
-    public Hbase getHbase() {
-        return hbase;
-    }
-
-    public void setHbase(Hbase hbase) {
-        this.hbase = hbase;
-    }
-
-    public Clickhouse getClickhouse() {
-        return clickhouse;
-    }
-
-    public void setClickhouse(Clickhouse clickhouse) {
-        this.clickhouse = clickhouse;
+    public Map<String, DataSourceDefinition> getDefinition() {
+        return definition;
     }
 
     @Override
@@ -101,68 +73,29 @@ public class DynamicDataSourceProperties implements BeanClassLoaderAware, Initia
 
     @Override
     public void afterPropertiesSet() {
-        Assert.notNull(getMaster(), "a master dataSource cannot be null! please check your configuration");
+        DataSourceDefinition masterDataSource = getDefinition().get(DataSourceType.MASTER);
+        Assert.notNull(masterDataSource, "a master dataSource cannot be null! please check your configuration");
     }
 
-
-    public DataSourceBuilder<?> initializeDataSourceBuilder(BaseDataSourceProperties properties) {
-        return DataSourceBuilder.create(getClassLoader())
+    public <D extends DataSource> D buildDataSource(Class<D> type, String dataSourceType, DataSourceDefinition definition) {
+        if (!definition.getEnabled() && !DataSourceType.MASTER.equals(dataSourceType)) {
+            return null;
+        }
+        D dataSource = DataSourceBuilder.create(getClassLoader())
                 .type(getType())
-                .driverClassName(properties.getDriverClassName())
-                .url(properties.getUrl())
-                .username(properties.getUsername())
-                .password(properties.getPassword());
-    }
-
-    public <T extends DataSource> T buildDataSource(Class<T> type, BaseDataSourceProperties properties) {
-        T dataSource = initializeDataSourceBuilder(properties).type(type).build();
+                .driverClassName(definition.getDriverClassName())
+                .url(definition.getUrl())
+                .username(definition.getUsername())
+                .password(definition.getPassword())
+                .type(type)
+                .build();
         if (dataSource instanceof DataSourceAware dataSourceAware) {
             dataSourceAware.setEnablePasswordEncrypt(getEnablePasswordEncrypt());
         }
         return dataSource;
     }
 
-
-    public <T extends DataSource> T createMasterDataSource(Class<T> type) {
-        Master master = getMaster();
-        Assert.notNull(master, "you must provide a master datasource profile.");
-        return buildDataSource(type, master);
-
-    }
-
-    public <T extends DataSource> T createHguSparkDataSource(Class<T> type) {
-        HguSpark hguSpark = getHguSpark();
-        if (!hguSpark.getEnabled()) {
-            return null;
-        }
-        return buildDataSource(type, hguSpark);
-    }
-
-    public <T extends DataSource> T createStbSparkDataSource(Class<T> type) {
-        StbSpark stbSpark = getStbSpark();
-        if (!stbSpark.getEnabled()) {
-            return null;
-        }
-        return buildDataSource(type, stbSpark);
-    }
-
-    public <T extends DataSource> T createHbaseDataSource(Class<T> type) {
-        Hbase hbase = getHbase();
-        if (!hbase.getEnabled()) {
-            return null;
-        }
-        return buildDataSource(type, hbase);
-    }
-
-    public <T extends DataSource> T createClickhouseDataSource(Class<T> type) {
-        Clickhouse clickhouse = getClickhouse();
-        if (!clickhouse.getEnabled()) {
-            return null;
-        }
-        return buildDataSource(type, clickhouse);
-    }
-
-    public static class BaseDataSourceProperties {
+    public static class DataSourceDefinition {
         private Boolean enabled = false;
 
         public Boolean getEnabled() {
@@ -173,12 +106,24 @@ public class DynamicDataSourceProperties implements BeanClassLoaderAware, Initia
             this.enabled = enabled;
         }
 
+        /**
+         * 驱动
+         */
         private String driverClassName;
 
+        /**
+         * 链接地址
+         */
         private String url;
 
+        /**
+         * 用户名
+         */
         private String username;
 
+        /**
+         * 密码
+         */
         private String password;
 
         public String getDriverClassName() {
@@ -212,25 +157,5 @@ public class DynamicDataSourceProperties implements BeanClassLoaderAware, Initia
         public void setPassword(String password) {
             this.password = password;
         }
-    }
-
-    public static class Master extends BaseDataSourceProperties {
-
-    }
-
-    public static class HguSpark extends BaseDataSourceProperties {
-
-    }
-
-    public static class StbSpark extends BaseDataSourceProperties {
-
-    }
-
-    public static class Hbase extends BaseDataSourceProperties {
-
-    }
-
-    public static class Clickhouse extends BaseDataSourceProperties {
-
     }
 }

@@ -1,0 +1,45 @@
+{
+  "hints": [
+    {
+      "name": "dhmp.core.province",
+      "providers": [
+        {
+          "name": "handle-as",
+          "parameters": {
+            "target": "com.zznode.dhmp.core.constant.Province"
+          }
+        }
+      ]
+    },
+    {
+      "name": "dhmp.core.config-location",
+      "values": [
+        {
+          "value": "file:"
+        },
+        {
+          "value": "classpath:"
+        },
+        {
+          "value": "configtree:"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "dhmp.datasource.definition.master.driver-class-name",
+      "providers": [
+        {
+          "name": "class-reference",
+          "parameters": {
+            "target": "java.sql.Driver"
+          }
+        }
+      ]
+    }
+  ]
+}

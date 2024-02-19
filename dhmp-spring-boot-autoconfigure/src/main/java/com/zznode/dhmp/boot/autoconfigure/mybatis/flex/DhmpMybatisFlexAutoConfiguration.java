@@ -2,11 +2,11 @@ package com.zznode.dhmp.boot.autoconfigure.mybatis.flex;
 
 import com.mybatisflex.annotation.SetListener;
 import com.mybatisflex.spring.FlexSqlSessionFactoryBean;
-import com.mybatisflex.spring.boot.MyBatisFlexCustomizer;
-import com.mybatisflex.spring.boot.MybatisFlexAutoConfiguration;
+import com.mybatisflex.spring.boot.*;
 import com.zznode.dhmp.boot.autoconfigure.mybatis.DhmpMybatisConfiguration;
 import com.zznode.dhmp.boot.autoconfigure.mybatis.flex.customizer.DefaultDhmpMybatisFlexCustomizer;
 import com.zznode.dhmp.boot.autoconfigure.mybatis.flex.customizer.DhmpMybatisFlexCustomizerComposite;
+import com.zznode.dhmp.boot.autoconfigure.mybatis.flex.customizer.DhmpSqlSessionFactoryBeanCustomizer;
 import com.zznode.dhmp.lov.client.LovClient;
 import com.zznode.dhmp.mybatis.flex.config.DelegatingDhmpFlexConfiguration;
 import com.zznode.dhmp.mybatis.flex.config.DhmpFlexConfigurer;
@@ -97,5 +97,10 @@ public class DhmpMybatisFlexAutoConfiguration {
             addCustomizers(customizers);
             return customizers;
         }
+    }
+
+    @Bean
+    public SqlSessionFactoryBeanCustomizer sqlSessionFactoryBeanCustomizer(MybatisFlexProperties mybatisFlexProperties, ObjectProvider<List<ConfigurationCustomizer>> configurationCustomizersProvider) {
+        return new DhmpSqlSessionFactoryBeanCustomizer(mybatisFlexProperties, configurationCustomizersProvider);
     }
 }

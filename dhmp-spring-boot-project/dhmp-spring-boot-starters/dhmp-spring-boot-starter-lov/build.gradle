@@ -1,0 +1,10 @@
+plugins {
+    id "org.springframework.boot.starter"
+}
+
+description = "starter of dhmp-lov"
+
+dependencies {
+    api(project(":dhmp-spring-boot-project:dhmp-spring-boot-starters:dhmp-spring-boot-starter"))
+    api("com.zznode.dhmp:dhmp-lov")
+}

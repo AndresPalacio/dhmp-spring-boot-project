@@ -1,0 +1,58 @@
+pluginManagement {
+    repositories {
+        mavenLocal()
+        maven { name "Alibaba"; url "https://maven.aliyun.com/repository/public" }
+        mavenCentral()
+        gradlePluginPortal()
+
+    }
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == "org.jetbrains.kotlin.jvm") {
+                useVersion "${kotlinVersion}"
+            }
+            if (requested.id.id == "org.jetbrains.kotlin.plugin.spring") {
+                useVersion "${kotlinVersion}"
+            }
+        }
+    }
+}
+
+plugins {
+    id "com.gradle.enterprise" version "3.15.1"
+    id "io.spring.ge.conventions" version "0.0.15"
+}
+
+rootProject.name = "dhmp-spring-boot-build"
+
+enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
+
+settings.gradle.projectsLoaded {
+    gradleEnterprise {
+        buildScan {
+            def toolchainVersion = settings.gradle.rootProject.findProperty('toolchainVersion')
+            if (toolchainVersion != null) {
+                value('Toolchain version', toolchainVersion)
+                tag("JDK-$toolchainVersion")
+            }
+            def buildDir = settings.gradle.rootProject.getBuildDir()
+            buildDir.mkdirs()
+            new File(buildDir, "build-scan-uri.txt").text = "build scan not generated"
+            buildScanPublished { scan ->
+                buildDir.mkdirs()
+                new File(buildDir, "build-scan-uri.txt").text = "<${scan.buildScanUri}|build scan>\n"
+            }
+        }
+    }
+}
+
+include "dhmp-spring-boot-project:dhmp-spring-boot-dependencies"
+include "dhmp-spring-boot-project:dhmp-spring-boot-parent"
+include "dhmp-spring-boot-project:dhmp-spring-boot"
+include "dhmp-spring-boot-project:dhmp-spring-boot-autoconfigure"
+
+file("${rootDir}/dhmp-spring-boot-project/dhmp-spring-boot-starters").eachDirMatch(~/dhmp-spring-boot-starter.*/) {
+    include "dhmp-spring-boot-project:dhmp-spring-boot-starters:${it.name}"
+}
+
+

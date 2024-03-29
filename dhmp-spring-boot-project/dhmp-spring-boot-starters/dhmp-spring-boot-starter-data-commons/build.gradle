@@ -1,0 +1,13 @@
+plugins {
+    id "org.springframework.boot.starter"
+}
+
+description = "starter of dhmp-data-commons"
+
+dependencies {
+    api(project(":dhmp-spring-boot-project:dhmp-spring-boot-starters:dhmp-spring-boot-starter"))
+    api("com.zznode.dhmp:dhmp-data-commons")
+    api("com.github.pagehelper:pagehelper-spring-boot-starter")
+//	api("com.github.pagehelper:pagehelper")
+
+}

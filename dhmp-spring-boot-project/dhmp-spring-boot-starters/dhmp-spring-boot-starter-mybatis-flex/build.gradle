@@ -1,0 +1,14 @@
+plugins {
+    id "org.springframework.boot.starter"
+}
+
+description = "starter of dhmp-jdbc"
+
+dependencies {
+    api(project(":dhmp-spring-boot-project:dhmp-spring-boot-starters:dhmp-spring-boot-starter"))
+    api(project(":dhmp-spring-boot-project:dhmp-spring-boot-starters:dhmp-spring-boot-starter-jdbc"))
+    api("com.zznode.dhmp:dhmp-mybatis-flex")
+    api("com.mybatis-flex:mybatis-flex-spring-boot-starter") {
+        exclude group: "org.mybatis", module: "mybatis-spring"
+    }
+}

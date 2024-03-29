@@ -1,0 +1,92 @@
+plugins {
+    id "org.springframework.boot.bom"
+    id "org.springframework.boot.conventions"
+    id "org.springframework.boot.deployed"
+}
+
+description = "Dhmp Spring Boot Dependencies"
+
+bom {
+    effectiveBomArtifact()
+    upgrade {
+        policy = "same-minor-version"
+        gitHub {
+            issueLabels = ["type: dependency-upgrade"]
+        }
+    }
+    library("spring-boot-dependencies", "${springBootVersion}") {
+        group("org.springframework.boot") {
+            imports = [
+                    "spring-boot-dependencies"
+            ]
+        }
+    }
+    library("dhmp component", "${dhmpComponentsVersion}") {
+        group("com.zznode.dhmp") {
+            imports = [
+                    "dhmp-component-bom"
+            ]
+        }
+    }
+    library("dhmp security", "${dhmpSecurityVersion}") {
+        group("com.zznode.dhmp.security") {
+            imports = [
+                    "dhmp-security-bom"
+            ]
+        }
+    }
+    library("dhmp boot", "${version}") {
+        group("com.zznode.dhmp.boot") {
+            modules = [
+                    "dhmp-spring-boot",
+                    "dhmp-spring-boot-autoconfigure",
+                    "dhmp-spring-boot-starter",
+                    "dhmp-spring-boot-starter-data-commons",
+                    "dhmp-spring-boot-starter-export",
+                    "dhmp-spring-boot-starter-file",
+                    "dhmp-spring-boot-starter-jdbc",
+                    "dhmp-spring-boot-starter-lov",
+                    "dhmp-spring-boot-starter-mybatis-flex",
+                    "dhmp-spring-boot-starter-mybatis-plus",
+                    "dhmp-spring-boot-starter-oauth2-authorization-server",
+                    "dhmp-spring-boot-starter-oauth2-resource-server",
+                    "dhmp-spring-boot-starter-schedule",
+                    "dhmp-spring-boot-starter-web",
+            ]
+        }
+    }
+    library("mybatis-flex-boot", "1.8.4") {
+        group("com.mybatis-flex") {
+            modules = [
+                    "mybatis-flex-spring-boot-starter"
+            ]
+        }
+    }
+    library("mybatis-plus-boot", "3.5.4.1") {
+        group("com.baomidou") {
+            modules = [
+                    "mybatis-plus-boot-starter",
+                    "mybatis-plus-spring-boot-autoconfigure"
+            ]
+        }
+    }
+    library("pagehelper-boot", "2.1.0") {
+        group("com.github.pagehelper") {
+            modules = [
+                    "pagehelper-spring-boot-starter",
+                    "pagehelper-spring-boot-autoconfigure"
+            ]
+        }
+    }
+    library("pagehelper", "6.1.0") {
+        group("com.github.pagehelper") {
+            modules = [
+                    "pagehelper"
+            ]
+        }
+    }
+}
+
+generateMetadataFileForMavenPublication {
+    enabled = false
+}

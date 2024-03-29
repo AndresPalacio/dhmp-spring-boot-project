@@ -1,0 +1,11 @@
+plugins {
+    id "org.springframework.boot.starter"
+}
+
+description = "starter of dhmp-jdbc"
+
+dependencies {
+    api(project(":dhmp-spring-boot-project:dhmp-spring-boot-starters:dhmp-spring-boot-starter"))
+    api("com.zznode.dhmp.security:dhmp-security-oauth2-resource-server")
+    api("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+}

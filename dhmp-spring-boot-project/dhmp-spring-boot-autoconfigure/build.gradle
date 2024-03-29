@@ -1,0 +1,48 @@
+import org.springframework.boot.build.constraints.ExtractVersionConstraints
+
+plugins {
+//    id "java-library"
+    id "org.jetbrains.kotlin.jvm"
+    id "org.springframework.boot.conventions"
+    id "org.springframework.boot.deployed"
+    id "org.springframework.boot.optional-dependencies"
+}
+
+description = "Spring Boot AutoConfigure"
+
+dependencies {
+    api(project(":dhmp-spring-boot-project:dhmp-spring-boot"))
+
+    api(("org.springframework.boot:spring-boot-autoconfigure"))
+
+    optional(("org.springframework.boot:spring-boot-configuration-processor"))
+    optional(("org.springframework:spring-webmvc"))
+    optional(("org.springframework:spring-webflux"))
+
+    optional("com.zznode.dhmp:dhmp-web")
+    optional("com.zznode.dhmp:dhmp-jdbc")
+    optional("com.zznode.dhmp:dhmp-export")
+    optional("com.zznode.dhmp:dhmp-mybatis-plus")
+    optional("com.zznode.dhmp:dhmp-mybatis-flex")
+    optional("com.zznode.dhmp:dhmp-data-commons")
+    optional("com.zznode.dhmp:dhmp-lov")
+    optional("com.zznode.dhmp:dhmp-file")
+    optional("com.zznode.dhmp:dhmp-schedule")
+    optional("com.zznode.dhmp.security:dhmp-security-oauth2-resource-server")
+    optional("com.zznode.dhmp.security:dhmp-security-oauth2-authorization-server")
+    optional("com.mybatis-flex:mybatis-flex-spring-boot-starter")
+    optional("com.baomidou:mybatis-plus-spring-boot-autoconfigure")
+    optional("com.github.pagehelper:pagehelper-spring-boot-autoconfigure")
+    optional("com.zaxxer:HikariCP")
+    optional("org.apache.tomcat.embed:tomcat-embed-core")
+    optional("com.fasterxml.jackson.core:jackson-databind")
+}
+
+task dependencyVersions(type: ExtractVersionConstraints) {
+    enforcedPlatform(":dhmp-spring-boot-project:dhmp-spring-boot-dependencies")
+}
+
+
+test {
+    jvmArgs += "--add-opens=java.base/java.net=ALL-UNNAMED"
+}

@@ -1,0 +1,25 @@
+plugins {
+    id "org.springframework.boot.bom"
+    id "org.springframework.boot.conventions"
+    id "org.springframework.boot.deployed"
+}
+
+description = "Spring Boot Parent. 管理依赖"
+
+bom {
+    upgrade {
+        policy = "same-major-version"
+        gitHub {
+            issueLabels = ["type: task"]
+        }
+    }
+}
+
+dependencies {
+    api(enforcedPlatform(project(":dhmp-spring-boot-project:dhmp-spring-boot-dependencies")))
+}
+
+tasks.withType(GenerateModuleMetadata).configureEach {
+    // Internal module so enforced platform dependencies are OK
+    suppressedValidationErrors.add('enforced-platform')
+}

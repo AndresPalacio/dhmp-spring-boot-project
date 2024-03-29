@@ -1,0 +1,33 @@
+plugins {
+    id "java-library"
+    id "org.jetbrains.kotlin.jvm"
+    id "org.springframework.boot.conventions"
+    id "org.springframework.boot.deployed"
+    id "org.springframework.boot.optional-dependencies"
+}
+
+description = "Dhmp Boot"
+
+
+dependencies {
+
+    annotationProcessor("org.apache.logging.log4j:log4j-core")
+    api("org.springframework.boot:spring-boot")
+    api("com.zznode.dhmp:dhmp-core")
+    api("com.zznode.dhmp:dhmp-context")
+
+    optional("com.zznode.dhmp:dhmp-web")
+    optional("com.zznode.dhmp:dhmp-jdbc")
+    optional("org.springframework:spring-webflux")
+    optional("com.zaxxer:HikariCP")
+    optional("org.yaml:snakeyaml")
+    testRuntimeOnly("org.testcontainers:jdbc") {
+        exclude group: "javax.annotation", module: "javax.annotation-api"
+        exclude group: "javax.xml.bind", module: "jaxb-api"
+    }
+}
+
+
+test {
+    jvmArgs += "--add-opens=java.base/java.net=ALL-UNNAMED"
+}

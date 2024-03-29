@@ -55,11 +55,26 @@ class MavenPublishingConventions {
     void apply(Project project) {
         project.getPlugins().withType(MavenPublishPlugin.class).all((mavenPublish) -> {
             PublishingExtension publishing = project.getExtensions().getByType(PublishingExtension.class);
-            if (project.hasProperty("deploymentRepository")) {
-                publishing.getRepositories().maven((mavenRepository) -> {
-                    mavenRepository.setUrl(project.property("deploymentRepository"));
-                    mavenRepository.setName("deployment");
-                });
+            if (project.hasProperty("publishToSnapshot")) {
+                if ("true".equals(project.findProperty("publishToSnapshot"))) {
+                    publishing.getRepositories().maven((mavenRepository) -> {
+                        mavenRepository.setUrl(project.findProperty("snapshotRepository"));
+                        mavenRepository.setName("snapshot");
+                        mavenRepository.credentials(c -> {
+                            c.setUsername((String) project.findProperty("snapshotUsername"));
+                            c.setPassword((String) project.findProperty("snapshotPassword"));
+                        });
+                    });
+                } else {
+                    publishing.getRepositories().maven((mavenRepository) -> {
+                        mavenRepository.setUrl(project.findProperty("releaseRepository"));
+                        mavenRepository.setName("release");
+                        mavenRepository.credentials(c -> {
+                            c.setUsername((String) project.findProperty("releaseUsername"));
+                            c.setPassword((String) project.findProperty("releasePassword"));
+                        });
+                    });
+                }
             }
             publishing.getPublications()
                     .withType(MavenPublication.class)

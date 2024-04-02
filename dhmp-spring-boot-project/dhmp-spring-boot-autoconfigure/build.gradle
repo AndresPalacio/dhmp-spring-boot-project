@@ -14,7 +14,7 @@ dependencies {
     api(project(":dhmp-spring-boot-project:dhmp-spring-boot"))
 
     api(("org.springframework.boot:spring-boot-autoconfigure"))
-
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     optional(("org.springframework.boot:spring-boot-configuration-processor"))
     optional(("org.springframework:spring-webmvc"))
     optional(("org.springframework:spring-webflux"))
@@ -32,7 +32,6 @@ dependencies {
     optional("com.zznode.dhmp.security:dhmp-security-oauth2-authorization-server")
     optional("com.mybatis-flex:mybatis-flex-spring-boot-starter")
     optional("com.baomidou:mybatis-plus-spring-boot-autoconfigure")
-    optional("com.github.pagehelper:pagehelper-spring-boot-autoconfigure")
     optional("com.zaxxer:HikariCP")
     optional("org.apache.tomcat.embed:tomcat-embed-core")
     optional("com.fasterxml.jackson.core:jackson-databind")
@@ -43,6 +42,3 @@ task dependencyVersions(type: ExtractVersionConstraints) {
 }
 
 
-test {
-    jvmArgs += "--add-opens=java.base/java.net=ALL-UNNAMED"
-}

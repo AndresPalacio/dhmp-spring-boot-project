@@ -2,8 +2,6 @@ package com.zznode.dhmp.boot.autoconfigure.data.page;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInterceptor;
-import com.github.pagehelper.autoconfigure.PageHelperProperties;
-import com.github.pagehelper.autoconfigure.PageHelperStandardProperties;
 import com.zznode.dhmp.boot.autoconfigure.mybatis.flex.DhmpMybatisFlexAutoConfiguration;
 import com.zznode.dhmp.boot.autoconfigure.mybatis.plus.DhmpMybatisPlusAutoConfiguration;
 import com.zznode.dhmp.data.page.PagePostInterceptor;
@@ -11,7 +9,6 @@ import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -32,7 +29,6 @@ import java.util.List;
 @ConditionalOnClass(PageHelper.class)
 @ConditionalOnBean(SqlSessionFactory.class)
 @EnableConfigurationProperties({PageHelperProperties.class, PageHelperStandardProperties.class})
-@AutoConfigureBefore({com.github.pagehelper.autoconfigure.PageHelperAutoConfiguration.class})
 @AutoConfigureAfter({DhmpMybatisFlexAutoConfiguration.class, DhmpMybatisPlusAutoConfiguration.class})
 public class PageHelperAutoConfiguration implements InitializingBean {
     private final List<SqlSessionFactory> sqlSessionFactoryList;

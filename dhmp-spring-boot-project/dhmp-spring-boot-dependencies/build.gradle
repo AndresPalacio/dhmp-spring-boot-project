@@ -62,9 +62,10 @@ bom {
             ]
         }
     }
-    library("mybatis-plus-boot", "3.5.4.1") {
+    library("mybatis-plus-boot", "3.5.5") {
         group("com.baomidou") {
             modules = [
+                    "mybatis-plus",
                     "mybatis-plus-boot-starter",
                     "mybatis-plus-spring-boot-autoconfigure"
             ]

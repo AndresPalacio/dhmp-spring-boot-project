@@ -1,0 +1,48 @@
+plugins {
+    id "org.springframework.boot.bom"
+    id "org.springframework.boot.conventions"
+    id "org.springframework.boot.deployed"
+    id "org.springframework.boot.maven-repository"
+}
+
+description = "Parent pom providing dependency and plugin management for applications built with Maven"
+
+publishing.publications.withType(MavenPublication) {
+    pom.withXml { xml ->
+        def root = xml.asNode()
+        root.groupId.replaceNode {
+            parent {
+                delegate.groupId("org.springframework.boot")
+                delegate.artifactId("spring-boot-starter-parent")
+                delegate.version("${springBootVersion}")
+            }
+        }
+        root.remove(root.version)
+
+    }
+}
+
+bom {
+    effectiveBomArtifact()
+    library("dhmp-spring-boot-dependencies", "${project.version}") {
+        group("com.zznode.dhmp.boot") {
+            imports = [
+                    "dhmp-spring-boot-dependencies"
+            ]
+        }
+    }
+    library("spring-cloud", "2023.0.0") {
+        group("org.springframework.cloud") {
+            imports = [
+                    "spring-cloud-dependencies"
+            ]
+        }
+    }
+    library("spring-cloud-alibaba", "2023.0.0.0-RC1") {
+        group("com.alibaba.cloud") {
+            imports = [
+                    "spring-cloud-alibaba-dependencies"
+            ]
+        }
+    }
+}

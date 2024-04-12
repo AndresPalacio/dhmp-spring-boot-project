@@ -1,8 +1,8 @@
 package com.zznode.dhmp.boot.core;
 
 import com.zznode.dhmp.core.constant.Province;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.Order;
@@ -18,7 +18,7 @@ import org.springframework.util.StringUtils;
 @Order(0)
 public final class DhmpApplicationContextInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
-    private static final Logger logger = LoggerFactory.getLogger(DhmpApplicationContextInitializer.class);
+    private static final Log logger = LogFactory.getLog(DhmpApplicationContextInitializer.class);
 
     private static final String PROVINCE_PROPERTY_NAME = "dhmp.core.province";
 
@@ -30,7 +30,7 @@ public final class DhmpApplicationContextInitializer implements ApplicationConte
         Province.setCurrentProvince(province);
         Province currentProvince = Province.currentProvince();
         String applicationName = getApplicationId(environment);
-        logger.info("application {} running in province: {}",applicationName, currentProvince.getProvinceName());
+        logger.info(String.format("application %s running in province: %s", applicationName, currentProvince.getProvinceName()));
     }
 
     private String getApplicationId(ConfigurableEnvironment environment) {

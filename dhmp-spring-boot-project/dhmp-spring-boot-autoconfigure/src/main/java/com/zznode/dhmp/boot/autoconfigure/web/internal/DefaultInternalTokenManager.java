@@ -2,8 +2,8 @@ package com.zznode.dhmp.boot.autoconfigure.web.internal;
 
 import com.zznode.dhmp.core.utils.AesUtil;
 import com.zznode.dhmp.web.client.InternalTokenManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -19,7 +19,7 @@ public class DefaultInternalTokenManager implements InternalTokenManager {
     private static final String TOKEN_SPLITTER = ":";
     private static final int TOKEN_PART = 2;
 
-    private final Logger logger  = LoggerFactory.getLogger(DefaultInternalTokenManager.class);
+    private final Log logger = LogFactory.getLog(DefaultInternalTokenManager.class);
     private final DhmpWebInternalProperties properties;
 
 
@@ -44,18 +44,18 @@ public class DefaultInternalTokenManager implements InternalTokenManager {
         try {
             decryptToken = AesUtil.decryptData(token);
         } catch (Exception e) {
-            logger.error("error occurred while decrypting token: [{}].", token, e);
+            logger.error(String.format("error occurred while decrypting token: [%s].", token), e);
             return false;
         }
         String[] split = decryptToken.split(TOKEN_SPLITTER);
         if (split.length != TOKEN_PART) {
-            logger.error("Invalid token: [{}].", token);
+            logger.error(String.format("Invalid token: [%s].", token));
             return false;
         }
         String tokenValue = split[0];
         if (!Objects.equals(tokenValue, properties.getInternalToken())) {
             // 此处可能出现 在发起远程调用请求之后配置中心修改了token配置，导致获取到的token校验失败, 概率较低, 不想解决
-            logger.error("token value [{}] is error.", tokenValue);
+            logger.error(String.format("token value [%s] is error.", tokenValue));
             return false;
         }
         long expireTime;

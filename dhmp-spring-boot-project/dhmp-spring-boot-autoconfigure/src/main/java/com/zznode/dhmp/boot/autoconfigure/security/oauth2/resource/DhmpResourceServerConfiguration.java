@@ -17,6 +17,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 /**
@@ -33,9 +34,9 @@ public class DhmpResourceServerConfiguration {
     static class MvcPermissionCheckConfiguration {
 
         @Bean
-        public PermissionAuthorizationManager permissionAuthorizationManager(ObjectProvider<RequestMappingHandlerMapping> handlerMapping,
-                                                                             ObjectProvider<InternalTokenManager> internalTokenManager) {
-            return new PermissionAuthorizationManager(handlerMapping.getIfAvailable(), internalTokenManager.getIfAvailable());
+        public PermissionAuthorizationManager permissionAuthorizationManager(HandlerMappingIntrospector handlerMappingIntrospector,
+                                                                             InternalTokenManager internalTokenManager) {
+            return new PermissionAuthorizationManager(handlerMappingIntrospector, internalTokenManager);
         }
 
     }

@@ -32,7 +32,9 @@ dependencies {
     optional("com.zznode.dhmp.security:dhmp-security-oauth2-authorization-server")
     optional("com.mybatis-flex:mybatis-flex-spring-boot-starter")
     optional("com.baomidou:mybatis-plus-spring-boot-autoconfigure")
-    optional("com.zaxxer:HikariCP")
+    optional("com.zaxxer:HikariCP") {
+        exclude group: "org.slf4j", module: "slf4j-api"
+    }
     optional("org.apache.tomcat.embed:tomcat-embed-core")
     optional("com.fasterxml.jackson.core:jackson-databind")
 }

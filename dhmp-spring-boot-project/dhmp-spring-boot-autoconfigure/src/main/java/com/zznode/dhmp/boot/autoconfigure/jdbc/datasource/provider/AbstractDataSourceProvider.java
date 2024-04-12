@@ -4,8 +4,8 @@ import com.zaxxer.hikari.HikariDataSource;
 import com.zznode.dhmp.boot.autoconfigure.jdbc.datasource.DynamicDataSourceProperties;
 import com.zznode.dhmp.jdbc.datasource.DataSourceProvider;
 import com.zznode.dhmp.jdbc.datasource.DataSourceType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.util.Assert;
 
 import javax.sql.DataSource;
@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public abstract class AbstractDataSourceProvider<D extends DataSource> implements DataSourceProvider {
 
-    private final static Logger logger = LoggerFactory.getLogger(AbstractDataSourceProvider.class);
+    private final static Log logger = LogFactory.getLog(AbstractDataSourceProvider.class);
 
     private final Map<Object, Object> dataSources = new HashMap<>();
 
@@ -83,11 +83,11 @@ public abstract class AbstractDataSourceProvider<D extends DataSource> implement
         Assert.hasText(dataSourceName, "dataSourceName cannot be null");
         Assert.notNull(dataSource, "dataSource cannot be null");
         if (this.dataSources.containsKey(dataSourceName)) {
-            logger.info("already has a dataSource named with {}", dataSourceName);
+            logger.info(String.format("already has a dataSource named with %s", dataSourceName));
             return;
         }
         if (!getType().isAssignableFrom(dataSource.getClass())) {
-            logger.info("type {} is not assign with {}", dataSource.getClass().getName(), getType().getName());
+            logger.info(String.format("type %s is not assign with %s", dataSource.getClass().getName(), getType().getName()));
             return;
         }
         this.dataSources.put(dataSourceName, dataSource);

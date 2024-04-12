@@ -1,7 +1,7 @@
 package com.zznode.dhmp.boot.context;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.Order;
@@ -16,7 +16,7 @@ import org.springframework.core.annotation.Order;
 @Order(1)
 public class ProvinceComponentContextInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
-    private final Logger logger = LoggerFactory.getLogger(ProvinceComponentContextInitializer.class);
+    private final Log logger = LogFactory.getLog(ProvinceComponentContextInitializer.class);
 
     @Override
     public void initialize(ConfigurableApplicationContext applicationContext) {

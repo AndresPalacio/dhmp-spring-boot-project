@@ -3,8 +3,8 @@ package com.zznode.dhmp.boot.autoconfigure.context;
 import com.zznode.dhmp.boot.autoconfigure.core.DhmpCoreAutoConfiguration;
 import com.zznode.dhmp.context.ProvinceComponentScannerConfigurer;
 import com.zznode.dhmp.context.util.ApplicationContextHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -35,7 +35,7 @@ import java.util.List;
 @AutoConfigureBefore({DhmpCoreAutoConfiguration.class})
 public class DhmpProvinceCustomizerAutoConfiguration {
 
-    private static final Logger logger = LoggerFactory.getLogger(DhmpProvinceCustomizerAutoConfiguration.class);
+    private static final Log logger = LogFactory.getLog(DhmpProvinceCustomizerAutoConfiguration.class);
 
 
     @Bean
@@ -63,7 +63,7 @@ public class DhmpProvinceCustomizerAutoConfiguration {
             }
             List<String> packages = AutoConfigurationPackages.get(this.beanFactory);
             if (logger.isDebugEnabled()) {
-                packages.forEach(pkg -> logger.debug("Using auto-configuration base package '{}'", pkg));
+                packages.forEach(pkg -> logger.debug(String.format("Using auto-configuration base package '%s'", pkg)));
             }
 
             BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(ProvinceComponentScannerConfigurer.class);

@@ -21,7 +21,7 @@ publishing.publications.withType(MavenPublication) {
 
     }
 }
-
+version "${project.version}"
 bom {
     effectiveBomArtifact()
     library("dhmp-spring-boot-dependencies", "${project.version}") {
@@ -31,14 +31,14 @@ bom {
             ]
         }
     }
-    library("spring-cloud", "2023.0.0") {
+    library("spring-cloud", "2023.0.1") {
         group("org.springframework.cloud") {
             imports = [
                     "spring-cloud-dependencies"
             ]
         }
     }
-    library("spring-cloud-alibaba", "2023.0.0.0-RC1") {
+    library("spring-cloud-alibaba", "2023.0.1.0") {
         group("com.alibaba.cloud") {
             imports = [
                     "spring-cloud-alibaba-dependencies"

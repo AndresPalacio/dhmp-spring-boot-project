@@ -3,11 +3,11 @@ package com.zznode.dhmp.boot.autoconfigure.jdbc.datasource;
 import com.zaxxer.hikari.HikariDataSource;
 import com.zznode.dhmp.boot.jdbc.datasource.DataSourceAware;
 import com.zznode.dhmp.jdbc.datasource.DataSourceType;
+import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
 import javax.sql.DataSource;
@@ -62,7 +62,7 @@ public class DynamicDataSourceProperties implements BeanClassLoaderAware, Initia
     }
 
     @Override
-    public void setBeanClassLoader(@NonNull ClassLoader classLoader) {
+    public void setBeanClassLoader(ClassLoader classLoader) {
         this.classLoader = classLoader;
     }
 
@@ -77,12 +77,12 @@ public class DynamicDataSourceProperties implements BeanClassLoaderAware, Initia
         Assert.notNull(masterDataSource, "a master dataSource cannot be null! please check your configuration");
     }
 
+    @Nullable
     public <D extends DataSource> D buildDataSource(Class<D> type, String dataSourceType, DataSourceDefinition definition) {
         if (!definition.getEnabled() && !DataSourceType.MASTER.equals(dataSourceType)) {
             return null;
         }
         D dataSource = DataSourceBuilder.create(getClassLoader())
-                .type(getType())
                 .driverClassName(definition.getDriverClassName())
                 .url(definition.getUrl())
                 .username(definition.getUsername())

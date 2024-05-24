@@ -1,8 +1,8 @@
-package com.zznode.dhmp.boot.autoconfigure.jdbc.datasource.provider.hikari;
+package com.zznode.dhmp.boot.autoconfigure.jdbc.datasource.configurer.hikari;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zznode.dhmp.boot.autoconfigure.jdbc.datasource.DynamicDataSourceProperties;
-import com.zznode.dhmp.boot.autoconfigure.jdbc.datasource.provider.AbstractDataSourceProvider;
+import com.zznode.dhmp.boot.autoconfigure.jdbc.datasource.configurer.AbstractDataSourceConfigurer;
 
 import javax.sql.DataSource;
 
@@ -12,12 +12,12 @@ import javax.sql.DataSource;
  * @author 王俊
  * @date create in 2023/5/26 17:32
  */
-public class HikariAbstractDataSourceProvider extends AbstractDataSourceProvider<DhmpHikariDataSource> {
+public class HikariDataSourceConfigurer extends AbstractDataSourceConfigurer<DhmpHikariDataSource> {
 
     private final HikariConfig hikariConfig;
 
-    public HikariAbstractDataSourceProvider(DynamicDataSourceProperties properties, HikariConfig hikariConfig) {
-        super(properties, DhmpHikariDataSource.class);
+    public HikariDataSourceConfigurer(DynamicDataSourceProperties properties, HikariConfig hikariConfig) {
+        super(properties);
         this.hikariConfig = hikariConfig;
     }
 

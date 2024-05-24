@@ -1,4 +1,4 @@
-package com.zznode.dhmp.boot.autoconfigure.jdbc.datasource.provider.hikari;
+package com.zznode.dhmp.boot.autoconfigure.jdbc.datasource.configurer.hikari;
 
 import com.zaxxer.hikari.HikariDataSource;
 import com.zznode.dhmp.boot.jdbc.datasource.DataSourceAware;

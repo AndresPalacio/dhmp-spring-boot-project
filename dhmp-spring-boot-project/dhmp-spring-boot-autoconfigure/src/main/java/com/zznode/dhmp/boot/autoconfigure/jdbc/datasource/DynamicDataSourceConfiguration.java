@@ -2,10 +2,9 @@ package com.zznode.dhmp.boot.autoconfigure.jdbc.datasource;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import com.zznode.dhmp.boot.autoconfigure.jdbc.datasource.provider.hikari.HikariAbstractDataSourceProvider;
-import com.zznode.dhmp.jdbc.datasource.DataSourceProvider;
+import com.zznode.dhmp.boot.autoconfigure.jdbc.datasource.configurer.hikari.HikariDataSourceConfigurer;
+import com.zznode.dhmp.jdbc.datasource.config.DynamicDataSourceConfigurer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -28,17 +27,15 @@ abstract class DynamicDataSourceConfiguration {
 
         @Bean
         @ConfigurationProperties(prefix = "spring.datasource.hikari")
-        @ConditionalOnMissingBean
         HikariConfig hikariConfig() {
             return new HikariConfig();
         }
 
         @Bean
         @ConditionalOnSingleCandidate(HikariConfig.class)
-        @ConditionalOnMissingBean
-        DataSourceProvider hikariDataSourceDataSourceInitializer(DynamicDataSourceProperties properties,
-                                                                 HikariConfig hikariConfig) {
-            return new HikariAbstractDataSourceProvider(properties, hikariConfig);
+        DynamicDataSourceConfigurer hikariDataSourceConfigurer(DynamicDataSourceProperties properties,
+                                                               HikariConfig hikariConfig) {
+            return new HikariDataSourceConfigurer(properties, hikariConfig);
         }
     }
 

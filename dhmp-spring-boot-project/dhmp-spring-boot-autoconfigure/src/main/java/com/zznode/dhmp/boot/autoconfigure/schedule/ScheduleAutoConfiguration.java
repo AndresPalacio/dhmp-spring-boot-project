@@ -1,6 +1,6 @@
 package com.zznode.dhmp.boot.autoconfigure.schedule;
 
-import com.zznode.dhmp.schedule.job.DelegateExecuteJob;
+import com.zznode.dhmp.schedule.DelegateExecuteJob;
 import com.zznode.dhmp.schedule.manage.JobRecordManager;
 import com.zznode.dhmp.schedule.manage.RemoteJobRecordManager;
 import org.springframework.boot.autoconfigure.AutoConfiguration;

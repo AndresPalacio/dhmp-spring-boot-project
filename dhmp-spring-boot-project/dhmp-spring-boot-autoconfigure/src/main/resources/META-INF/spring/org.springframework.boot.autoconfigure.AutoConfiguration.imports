@@ -6,6 +6,7 @@ com.zznode.dhmp.boot.autoconfigure.web.internal.DhmpInternalRequestAutoConfigura
 com.zznode.dhmp.boot.autoconfigure.data.web.DhmpDataAutoConfiguration
 com.zznode.dhmp.boot.autoconfigure.data.exception.DhmpExceptionAutoConfiguration
 com.zznode.dhmp.boot.autoconfigure.data.page.PageHelperAutoConfiguration
+com.zznode.dhmp.boot.autoconfigure.data.process.sensitive.SensitiveDataProcessAutoConfiguration
 com.zznode.dhmp.boot.autoconfigure.jdbc.datasource.DynamicDataSourceAutoConfiguration
 com.zznode.dhmp.boot.autoconfigure.mybatis.plus.DhmpMybatisPlusAutoConfiguration
 com.zznode.dhmp.boot.autoconfigure.mybatis.flex.DhmpMybatisFlexAutoConfiguration

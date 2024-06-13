@@ -22,7 +22,6 @@ public class ProvinceComponentContextInitializer implements ApplicationContextIn
     public void initialize(ConfigurableApplicationContext applicationContext) {
         logger.debug("will exclude components annotated with @ProvinceComponent");
         // 注册 ProvinceCustomizerExcludeFilter
-        applicationContext.getBeanFactory()
-                .registerSingleton(ProvinceComponentExcludeFilter.class.getName(), new ProvinceComponentExcludeFilter());
+        ProvinceComponentExcludeFilter.registerWith(applicationContext.getBeanFactory());
     }
 }

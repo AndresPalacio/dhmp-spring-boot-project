@@ -1,5 +1,7 @@
 package com.zznode.dhmp.boot.context;
 
+import com.zznode.dhmp.context.annotation.ProvinceComponent;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.context.TypeExcludeFilter;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.classreading.MetadataReader;
@@ -15,11 +17,21 @@ import org.springframework.core.type.classreading.MetadataReaderFactory;
  */
 public final class ProvinceComponentExcludeFilter extends TypeExcludeFilter {
 
-    private static final String ANNOTATION_NAME = "com.zznode.dhmp.context.annotation.ProvinceComponent";
+    private static final String BEAN_NAME = ProvinceComponentExcludeFilter.class.getName();
+
+    private static final ProvinceComponentExcludeFilter INSTANCE = new ProvinceComponentExcludeFilter();
+
+    private static final String ANNOTATION_NAME = ProvinceComponent.class.getName();
 
     @Override
     public boolean match(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory) {
         AnnotationMetadata metadata = metadataReader.getAnnotationMetadata();
         return (metadata.isAnnotated(ANNOTATION_NAME));
+    }
+
+    static void registerWith(ConfigurableListableBeanFactory beanFactory) {
+        if (!beanFactory.containsSingleton(BEAN_NAME)) {
+            beanFactory.registerSingleton(BEAN_NAME, INSTANCE);
+        }
     }
 }
